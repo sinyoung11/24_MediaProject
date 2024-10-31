@@ -57,21 +57,5 @@ public class PlayerMoveController : MonoBehaviour
 
     }
 
-    /*public void OnPlayerAttack(InputAction.CallbackContext context) {
-        attackDir = context.ReadValue<Vector2>();
-
-        if (attackDir.x > 0) {
-            Debug.Log("Shoot right");
-        }
-        else if (attackDir.x < 0) {
-            Debug.Log("Shoot left");
-        }
-        else if (attackDir.y > 0) {
-            Debug.Log("Shoot up");
-        }
-        else if (attackDir.y < 0) {
-            Debug.Log("Shoot down");
-        }
-
-    }*/
+    
 }
