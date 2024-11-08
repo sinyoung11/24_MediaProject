@@ -148,7 +148,7 @@ public class EnemyController : MonoBehaviour
 
     public void Death()
     {
-        RoomController.instance.StartCoroutine(RoomController.instance.RoomCoroutine());
+        // TO DO Room에 등록된 적 수 줄이기
         Destroy(gameObject);
     }
 }

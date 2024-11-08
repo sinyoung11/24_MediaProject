@@ -1,34 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Linq;
-
-public class RoomInfo
-{
-    public string name;
-    public int X;
-    public int Y;
-}
 
 public class RoomController : MonoBehaviour
 {
-
     public static RoomController instance;
+    [SerializeField] private RoomGenerator roomGenerator;
+    [SerializeField] private GameObject roomPrefabObject;
 
-    string currentWorldName = "Basement";
-
-    RoomInfo currentLoadRoomData;
-
-    Room currRoom;
-
-    Queue<RoomInfo> loadRoomQueue = new Queue<RoomInfo>();
+    public Room currRoom;
 
     public List<Room> loadedRooms = new List<Room>();
+    private Queue<Vector2Int> roomQueue = new Queue<Vector2Int>(); 
 
-    bool isLoadingRoom = false;
     bool spawnedBossRoom = false;
-    bool updatedRooms = false;
 
     void Awake()
     {
@@ -37,211 +22,67 @@ public class RoomController : MonoBehaviour
 
     void Start()
     {
-        //LoadRoom("Start", 0, 0);
-        //LoadRoom("Empty", 1, 0);
-        //LoadRoom("Empty", -1, 0);
-        //LoadRoom("Empty", 0, 1);
-        //LoadRoom("Empty", 0, -1);
-    }
+        roomQueue = roomGenerator.GenerateRoomQueue();
 
-    void Update()
-    {
-        UpdateRoomQueue();
-    }
-
-    void UpdateRoomQueue()
-    {
-        if(isLoadingRoom)
+        // roomQueue에 있는 각 위치에 방을 생성
+        while (roomQueue.Count > 0)
         {
-            return;
+            Vector2Int roomPosition = roomQueue.Dequeue();
+            CreateRoom(roomPosition.x, roomPosition.y);
         }
 
-        if(loadRoomQueue.Count == 0)
-        {
-            if(!spawnedBossRoom)
-            {
-                StartCoroutine(SpawnBossRoom());
-            } 
-            else if(spawnedBossRoom && !updatedRooms)
-            {
-                foreach(Room room in loadedRooms)
-                {
-                    room.RemoveUnconnectedDoors();
-                }
-                UpdateRooms();
-                updatedRooms = true;
-            }
-            return;
+        ///// load 된 룸에게 다 문 업데이트 적용
+        foreach(Room _room in loadedRooms){
+            _room.RemoveUnconnectedDoors();
         }
 
-        currentLoadRoomData = loadRoomQueue.Dequeue();
-        isLoadingRoom = true;
-
-        StartCoroutine(LoadRoomRoutine(currentLoadRoomData));
-    }
-
-    IEnumerator SpawnBossRoom()
-    {
-        spawnedBossRoom = true;
-        yield return new WaitForSeconds(0.5f);
-        if(loadRoomQueue.Count == 0)
+        // 게임 시작 시 (0, 0) 위치의 방에서 시작
+        currRoom = FindRoom(0, 0);
+        if (currRoom != null)
         {
-            Room bossRoom = loadedRooms[loadedRooms.Count - 1];
-            Room tempRoom = new Room(bossRoom.X, bossRoom.Y);
-            Destroy(bossRoom.gameObject);
-            var roomToRemove = loadedRooms.Single(r => r.X == tempRoom.X && r.Y == tempRoom.Y);
-            loadedRooms.Remove(roomToRemove);
-            LoadRoom("End", tempRoom.X, tempRoom.Y);
+            OnPlayerEnterRoom(currRoom);
         }
     }
 
-    public void LoadRoom( string name, int x, int y)
+    // 지정된 좌표에 Room을 생성하는 메서드
+    private void CreateRoom(int x, int y)
     {
-        if(DoesRoomExist(x, y) == true)
-        {
-            return;
-        }
+        Vector3 roomPosition = new Vector3(x * roomPrefabObject.GetComponent<Room>().Width, 
+                                           y * roomPrefabObject.GetComponent<Room>().Height, 
+                                           0);
+        
+        // Room 프리팹을 인스턴스화하여 생성
+        GameObject newRoomObj = Instantiate(roomPrefabObject, roomPosition, Quaternion.identity);
+        Room newRoom = newRoomObj.GetComponent<Room>();
 
-        RoomInfo newRoomData = new RoomInfo();
-        newRoomData.name = name;
-        newRoomData.X = x;
-        newRoomData.Y = y;
+        // Room의 좌표 설정
+        newRoom.X = x;
+        newRoom.Y = y;
+        newRoom.MakeDoor();
 
-        loadRoomQueue.Enqueue(newRoomData);
+        // 방을 로드된 방 리스트에 추가
+        loadedRooms.Add(newRoom);
     }
 
-    IEnumerator LoadRoomRoutine(RoomInfo info)
+    // 방이 존재하는지 확인하는 함수
+    public bool DoesRoomExist(int x, int y)
     {
-        string roomName = currentWorldName + info.name;
-
-        AsyncOperation loadRoom = SceneManager.LoadSceneAsync(roomName, LoadSceneMode.Additive);
-
-        while(loadRoom.isDone == false)
-        {
-            yield return null;
-        }
+        return loadedRooms.Exists(room => room.X == x && room.Y == y);
     }
 
-    public void RegisterRoom( Room room)
+    // 특정 좌표에 있는 방을 찾는 함수
+    public Room FindRoom(int x, int y)
     {
-        if(!DoesRoomExist(currentLoadRoomData.X, currentLoadRoomData.Y))
-        {
-            room.transform.position = new Vector3(
-                currentLoadRoomData.X * room.Width,
-                currentLoadRoomData.Y * room.Height,
-                0
-            );
-
-            room.X = currentLoadRoomData.X;
-            room.Y = currentLoadRoomData.Y;
-            room.name = currentWorldName + "-" + currentLoadRoomData.name + " " + room.X + ", " + room.Y;
-            room.transform.parent = transform;
-
-            isLoadingRoom = false;
-
-            if(loadedRooms.Count == 0)
-            {
-                // TO DO CameraControl
-                // CameraController.instance.currRoom = room;
-            }
-
-            loadedRooms.Add(room);
-        }
-        else
-        {
-            Destroy(room.gameObject);
-            isLoadingRoom = false;
-        }
-
+        return loadedRooms.Find(room => room.X == x && room.Y == y);
     }
 
-    public bool DoesRoomExist( int x, int y)
-    {
-        return loadedRooms.Find( item => item.X == x && item.Y == y) != null;
-    }
-
-    public Room FindRoom( int x, int y)
-    {
-        return loadedRooms.Find( item => item.X == x && item.Y == y);
-    }
-
-    public string GetRandomRoomName()
-    {
-        string[] possibleRooms = new string[] {
-            "Empty",
-            "Basic1"
-        };
-
-        return possibleRooms[Random.Range(0, possibleRooms.Length)];
-    }
-
+    // 플레이어가 방에 들어갈 때 호출되는 함수
     public void OnPlayerEnterRoom(Room room)
     {
-        // TO DO Camera Controll
-        // CameraController.instance.currRoom = room;
         currRoom = room;
+        Debug.Log("Player entered room at: " + room.X + ", " + room.Y);
 
-        StartCoroutine(RoomCoroutine());
+        // 카메라나 UI 등을 업데이트하는 추가적인 작업을 여기에 추가할 수 있습니다.
     }
 
-    public IEnumerator RoomCoroutine()
-    {
-        yield return new WaitForSeconds(0.2f);
-        UpdateRooms();
-    }
-
-    public void UpdateRooms()
-    {
-        foreach(Room room in loadedRooms)
-        {
-            if(currRoom != room)
-            {
-                EnemyController[] enemies = room.GetComponentsInChildren<EnemyController>();
-                if(enemies != null)
-                {
-                    foreach(EnemyController enemy in enemies)
-                    {
-                        enemy.notInRoom = true;
-                        Debug.Log("Not in room");
-                    }
-
-                    foreach(Door door in room.GetComponentsInChildren<Door>())
-                    {
-                        door.doorCollider.SetActive(false);
-                    }
-                }
-                else
-                {
-                    foreach(Door door in room.GetComponentsInChildren<Door>())
-                    {
-                        door.doorCollider.SetActive(false);
-                    }
-                }
-            }
-            else
-            {
-              EnemyController[] enemies = room.GetComponentsInChildren<EnemyController>();
-                if(enemies.Length > 0)
-                {
-                    foreach(EnemyController enemy in enemies)
-                    {
-                        enemy.notInRoom = false;
-                        Debug.Log("In room");
-                    }
-                    
-                    foreach(Door door in room.GetComponentsInChildren<Door>())
-                    {
-                        door.doorCollider.SetActive(true);
-                    }
-                }
-                else
-                {
-                    foreach(Door door in room.GetComponentsInChildren<Door>())
-                    {
-                        door.doorCollider.SetActive(false);
-                    }
-                }  
-            }
-        }
-    }
 }
