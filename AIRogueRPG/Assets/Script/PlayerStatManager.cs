@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 public class PlayerStatManager : MonoBehaviour
 {
+    private static PlayerStatManager instance = null;
+    public static PlayerStatManager Instance {
+        get {
+            if (instance == null) return null;
+            return instance;
+        }
+    }
+
     [SerializeField]
     private GameObject heartHpPref;
 
@@ -12,6 +20,11 @@ public class PlayerStatManager : MonoBehaviour
     private float currentHp;
     private Transform hp;
 
+    public void Awake() {
+        if(instance == null) {
+            instance = this;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {

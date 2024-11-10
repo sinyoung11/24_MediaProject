@@ -25,6 +25,7 @@ public class EnemyController : MonoBehaviour
     public RoomEnemyController roomEnemyController;
     public EnemyState currState = EnemyState.Idle;
     public EnemyType enemyType;
+    private float healthPoint = 100.0f;
     public float range;
     public float speed;
     public float attackRange;
@@ -127,7 +128,7 @@ public class EnemyController : MonoBehaviour
             {
                 case(EnemyType.Melee):
                     // TO DO Damage to Player
-                    // GameController.DamagePlayer(1);
+                    PlayerStatManager.Instance.DamagePlayer(true);
                     StartCoroutine(CoolDown());
                 break;
                 case(EnemyType.Ranged):
@@ -146,6 +147,13 @@ public class EnemyController : MonoBehaviour
         coolDownAttack = true;
         yield return new WaitForSeconds(coolDown);
         coolDownAttack = false;
+    }
+
+    public void Damaged(float amount) {
+        healthPoint -= amount;
+        if(healthPoint <= 0.0f) {
+            Death();
+        }
     }
 
     public void Death()

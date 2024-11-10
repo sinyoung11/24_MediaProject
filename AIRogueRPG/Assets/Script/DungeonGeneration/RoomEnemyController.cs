@@ -9,6 +9,7 @@ public class RoomEnemyController : MonoBehaviour
     [SerializeField] private Room room;
 
     private List<EnemyController> enemyList = new List<EnemyController>();
+    private int enemyCount = -1;
     private int minEnemyNum = 5;
     private int maxEnemyNum = 10;
 
@@ -21,22 +22,21 @@ public class RoomEnemyController : MonoBehaviour
             grid.availablePoints.RemoveAt(randomPos);
 
             EnemyController enemyController = enemyObject.GetComponent<EnemyController>();
+            enemyController.roomEnemyController = this;
             enemyController.enemyNum = i;
             enemyList.Add(enemyController);
         }
+        enemyCount = enemyList.Count;
     }
 
     public void DeleteEnemy(int num){
-        enemyList.RemoveAt(num);
+        enemyCount--;
         CheckDoor();
     }
 
-    public bool isRemainEnemy(){
-        return enemyList.Count > 0;
-    }
 
     private void CheckDoor(){
-        if(!isRemainEnemy()){
+        if(enemyCount <=0){
             room.UnLockDoor();
         }
     }

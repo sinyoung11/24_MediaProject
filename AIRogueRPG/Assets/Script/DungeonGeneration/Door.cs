@@ -35,7 +35,7 @@ public class Door : MonoBehaviour
             isDoorActive = false;
         }
         else{
-            color = Color.white;
+            color = Color.red;
             isDoorActive = true;
         }
         doorSprite.color = color;

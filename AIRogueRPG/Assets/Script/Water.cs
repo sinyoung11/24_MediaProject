@@ -9,6 +9,7 @@ public class Water : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private float speed = 2f;
+    private float damage = 35.0f;
     private Vector2 shootDir;
     private bool isShooting;
     private float lifeTime = 2f;
@@ -49,8 +50,13 @@ public class Water : MonoBehaviour
 
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.CompareTag("Player")) return;
+        if (collision.CompareTag("Player") || collision.CompareTag("Water")) return;
         animator.SetBool("Explode", true);
+        if (collision.CompareTag("Enemy")) {
+            EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
+            enemy.Damaged(damage);
+
+        }
     }
 
     public void ShootWater(Vector2 dir) {
