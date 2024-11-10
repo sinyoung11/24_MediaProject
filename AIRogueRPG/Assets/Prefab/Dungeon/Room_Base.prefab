@@ -1326,8 +1326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b894747ccc066f84a9524022d0b7272a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Width: 20
-  Height: 11
+  Width: 22
+  Height: 12
   X: 0
   Y: 0
   roomEnemyController: {fileID: 5888077164371865051}
