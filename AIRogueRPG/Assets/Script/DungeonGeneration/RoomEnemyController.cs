@@ -6,6 +6,7 @@ public class RoomEnemyController : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GridController grid;
+    [SerializeField] private Room room;
 
     private List<EnemyController> enemyList = new List<EnemyController>();
     private int minEnemyNum = 5;
@@ -27,9 +28,16 @@ public class RoomEnemyController : MonoBehaviour
 
     public void DeleteEnemy(int num){
         enemyList.RemoveAt(num);
+        CheckDoor();
     }
 
     public bool isRemainEnemy(){
         return enemyList.Count > 0;
+    }
+
+    private void CheckDoor(){
+        if(!isRemainEnemy()){
+            room.UnLockDoor();
+        }
     }
 }

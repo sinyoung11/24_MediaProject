@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-
 public class Door : MonoBehaviour
 {
     public enum DoorType
@@ -10,8 +9,10 @@ public class Door : MonoBehaviour
         left, right, top, bottom
     }
 
+    public bool isDoorActive = false;
     public DoorType doorType;
     public GameObject doorCollider;
+    public SpriteRenderer doorSprite;
 
     private GameObject player;
     private float widthOffset = 4f;
@@ -27,8 +28,22 @@ public class Door : MonoBehaviour
         connectedRoom = room;
     }
 
+    public void LockDoor(bool goLock){
+        Color color = doorSprite.color;
+        if(goLock){
+            color = Color.black;
+            isDoorActive = false;
+        }
+        else{
+            color = Color.white;
+            isDoorActive = true;
+        }
+        doorSprite.color = color;
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
+        if(!isDoorActive) return;
         Room nextRoom = null;
         if (other.tag == "Player")
         {

@@ -49,6 +49,21 @@ public class Room : MonoBehaviour
                     break;
             }
         }
+        LockDoor();
+    }
+
+    public void LockDoor(){
+        rightDoor.LockDoor(true);
+        leftDoor.LockDoor(true);
+        topDoor.LockDoor(true);
+        bottomDoor.LockDoor(true);
+    }
+
+    public void UnLockDoor(){
+        rightDoor.LockDoor(false);
+        leftDoor.LockDoor(false);
+        topDoor.LockDoor(false);
+        bottomDoor.LockDoor(false);
     }
 
 

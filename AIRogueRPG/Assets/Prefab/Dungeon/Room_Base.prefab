@@ -438,6 +438,7 @@ MonoBehaviour:
   isDoorActive: 0
   doorType: 2
   doorCollider: {fileID: 4983463525552859955}
+  doorSprite: {fileID: 4983463525552859953}
 --- !u!1 &4983463525147423711
 GameObject:
   m_ObjectHideFlags: 0
@@ -963,6 +964,7 @@ MonoBehaviour:
   isDoorActive: 0
   doorType: 3
   doorCollider: {fileID: 4983463525064751744}
+  doorSprite: {fileID: 4983463525064751998}
 --- !u!1 &4983463525817190744
 GameObject:
   m_ObjectHideFlags: 0
@@ -1011,6 +1013,7 @@ MonoBehaviour:
   isDoorActive: 0
   doorType: 1
   doorCollider: {fileID: 4983463526287805254}
+  doorSprite: {fileID: 4983463526287805252}
 --- !u!1 &4983463526051127354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,6 +1395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 5051726810918457013, guid: d38621d3057d01a4783b753e0ffe2f24, type: 3}
   grid: {fileID: 4983463525492132351}
+  room: {fileID: 4983463526324811719}
 --- !u!1 &4983463526479570211
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,3 +1444,4 @@ MonoBehaviour:
   isDoorActive: 0
   doorType: 0
   doorCollider: {fileID: 4983463526051127354}
+  doorSprite: {fileID: 4983463526051127352}
