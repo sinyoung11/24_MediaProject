@@ -53,6 +53,7 @@ public class RoomController : MonoBehaviour
         
         // Room 프리팹을 인스턴스화하여 생성
         GameObject newRoomObj = Instantiate(roomPrefabObject, roomPosition, Quaternion.identity);
+        newRoomObj.name = $"Room ({x}, {y})";
         Room newRoom = newRoomObj.GetComponent<Room>();
 
         // Room의 좌표 설정
@@ -80,6 +81,7 @@ public class RoomController : MonoBehaviour
     public void OnPlayerEnterRoom(Room room)
     {
         currRoom = room;
+        currRoom.roomEnemyController.GenerateMonster();
         Debug.Log("Player entered room at: " + room.X + ", " + room.Y);
 
         // 카메라나 UI 등을 업데이트하는 추가적인 작업을 여기에 추가할 수 있습니다.

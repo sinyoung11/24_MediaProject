@@ -41,8 +41,6 @@ public class GridController : MonoBehaviour
                 go.SetActive(false);
             }
         }
-
-        GetComponentInParent<ObjectRoomSpawner>().InitialiseObjectSpawning();
     }
 
 }

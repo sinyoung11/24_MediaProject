@@ -21,6 +21,8 @@ public class EnemyController : MonoBehaviour
 {
 
     GameObject player;
+    public int enemyNum = -1;
+    public RoomEnemyController roomEnemyController;
     public EnemyState currState = EnemyState.Idle;
     public EnemyType enemyType;
     public float range;
@@ -149,6 +151,7 @@ public class EnemyController : MonoBehaviour
     public void Death()
     {
         // TO DO Room에 등록된 적 수 줄이기
+        roomEnemyController.DeleteEnemy(enemyNum);
         Destroy(gameObject);
     }
 }

@@ -8,6 +8,7 @@ public class Room : MonoBehaviour
     public int Height;
     public int X;
     public int Y;
+    public RoomEnemyController roomEnemyController;
 
     private bool updatedDoors = false;
 
