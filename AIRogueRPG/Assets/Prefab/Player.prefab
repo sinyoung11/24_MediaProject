@@ -15,9 +15,11 @@ GameObject:
   - component: {fileID: 1382362714413689754}
   - component: {fileID: 7489563104419545549}
   - component: {fileID: 2527954012429530244}
+  - component: {fileID: 7762511272583070313}
+  - component: {fileID: 7608844029878546896}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -205,6 +207,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e241ace0-b914-4cde-b1bb-ecf16ac8b061
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7762511272583070313}
+        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
+        m_MethodName: OnPlayerAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 56ef7566-3401-4bd8-bdd8-c69489faf736
+    m_ActionName: Player/Attack[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -288,3 +306,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1903987, y: 0.07125771}
   m_EdgeRadius: 0
+--- !u!114 &7762511272583070313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290871656811928776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aacf6c44ff27b4149b359b91f0631f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7608844029878546896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290871656811928776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ff670975a7486b48904ca190a32a2b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heartHpPref: {fileID: 8531601512715583596, guid: 8716b3ba10aeba84a93492c963d0f063, type: 3}
