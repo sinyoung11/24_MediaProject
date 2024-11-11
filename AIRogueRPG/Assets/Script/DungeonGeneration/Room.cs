@@ -99,4 +99,40 @@ public class Room : MonoBehaviour
     public Room GetBottom() => RoomController.instance.DoesRoomExist(X, Y - 1) ? RoomController.instance.FindRoom(X, Y - 1) : null;
 
     public Vector3 GetRoomCentre() => new Vector3(X * Width, Y * Height);
+
+    public void MovePlayerPosition(Door.DoorType doorType){
+        Vector3 movePosition = Vector3.zero;
+        switch(doorType){
+            case Door.DoorType.right:
+                movePosition = rightDoor.transform.position;
+                movePosition.x -= rightDoor.transform.lossyScale.x;
+                break;
+            case Door.DoorType.left:
+                movePosition = leftDoor.transform.position;
+                movePosition.x += leftDoor.transform.lossyScale.x;
+                break;
+            case Door.DoorType.top:
+                movePosition = topDoor.transform.position;
+                movePosition.y -= topDoor.transform.lossyScale.x;
+                break;
+            case Door.DoorType.bottom:
+                movePosition = bottomDoor.transform.position;
+                movePosition.y += bottomDoor.transform.lossyScale.x;
+                break;
+        }
+
+        PlayerMoveController.Instance.MovePlayerPosition(movePosition);
+        
+    }
+
+    public void SetCameraBoundary(){
+        Vector2 minPoint = this.transform.position;
+        minPoint.x -= Width / 2.0f;
+        minPoint.y -= Height / 2.0f;
+        Vector2 maxPoint = this.transform.position;
+        maxPoint.x += Width / 2.0f;
+        minPoint.y += Height / 2.0f;
+
+        CameraController.Instance.ChangeCameraBoundary(minPoint, maxPoint);
+    }
 }

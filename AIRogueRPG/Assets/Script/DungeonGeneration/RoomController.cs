@@ -82,6 +82,7 @@ public class RoomController : MonoBehaviour
     {
         currRoom = room;
         currRoom.roomEnemyController.GenerateMonster();
+        currRoom.SetCameraBoundary();
         Debug.Log("Player entered room at: " + room.X + ", " + room.Y);
 
         // 카메라나 UI 등을 업데이트하는 추가적인 작업을 여기에 추가할 수 있습니다.
