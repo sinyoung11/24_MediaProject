@@ -18,6 +18,8 @@ public class RoomController : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        GameController.Instance.SetGameStarted(true);
     }
 
     void Start()

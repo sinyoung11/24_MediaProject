@@ -26,7 +26,7 @@ public class PlayerMoveController : MonoBehaviour
     }
 
     private void FixedUpdate() {
-
+        if (!PlayerStatManager.Instance.isWorking) return;
         if (isMoving) {
 
             int count = rigidbody.Cast(
@@ -51,6 +51,8 @@ public class PlayerMoveController : MonoBehaviour
     }
 
     public void OnPlayerMove(InputAction.CallbackContext context) {
+        
+
         movement = context.ReadValue<Vector2>();
 
         isMoving = movement != Vector2.zero;
@@ -64,4 +66,5 @@ public class PlayerMoveController : MonoBehaviour
     public float GetMovementSpeed() {
         return speed;
     }
+
 }
