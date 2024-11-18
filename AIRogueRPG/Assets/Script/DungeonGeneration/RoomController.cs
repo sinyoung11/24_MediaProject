@@ -33,10 +33,14 @@ public class RoomController : MonoBehaviour
             CreateRoom(roomPosition.x, roomPosition.y);
         }
 
-        ///// load 된 룸에게 다 문 업데이트 적용
-        foreach(Room _room in loadedRooms){
-            _room.RemoveUnconnectedDoors();
+        // Load된 룸들에게 문 업데이트 적용
+        foreach (Room room in loadedRooms)
+        {
+            room.RemoveUnconnectedDoors();
         }
+
+        // 보스 방 설정
+        AssignBossRoom();
 
         // 게임 시작 시 (0, 0) 위치의 방에서 시작
         currRoom = FindRoom(0, 0);
@@ -83,10 +87,51 @@ public class RoomController : MonoBehaviour
     public void OnPlayerEnterRoom(Room room)
     {
         currRoom = room;
-        currRoom.roomEnemyController.GenerateMonster();
+        currRoom.GenerateMonster();
         Debug.Log("Player entered room at: " + room.X + ", " + room.Y);
 
         // 카메라나 UI 등을 업데이트하는 추가적인 작업을 여기에 추가할 수 있습니다.
     }
 
+    // 보스 방 설정 메서드
+    private void AssignBossRoom()
+    {
+        // (0, 0) 위치에서 모든 방까지의 멘허튼 거리 계산
+        int maxManhattanDistance = 0;
+        List<Room> potentialBossRooms = new List<Room>();
+
+        foreach (Room room in loadedRooms)
+        {
+            int manhattanDistance = Mathf.Abs(room.X) + Mathf.Abs(room.Y);
+
+            // 최대 멘허튼 거리 계산
+            if (manhattanDistance > maxManhattanDistance)
+            {
+                maxManhattanDistance = manhattanDistance;
+            }
+        }
+
+        // 최대 거리의 70% 이상인 방들 찾기
+        float thresholdDistance = maxManhattanDistance * 0.7f;
+
+        foreach (Room room in loadedRooms)
+        {
+            int manhattanDistance = Mathf.Abs(room.X) + Mathf.Abs(room.Y);
+
+            if (manhattanDistance >= thresholdDistance)
+            {
+                potentialBossRooms.Add(room);
+            }
+        }
+
+        // 보스 방을 랜덤으로 선택
+        if (potentialBossRooms.Count > 0)
+        {
+            Room bossRoom = potentialBossRooms[Random.Range(0, potentialBossRooms.Count)];
+            bossRoom.name = $"BossRoom ({bossRoom.X}, {bossRoom.Y})";
+            Debug.Log($"Boss room assigned at: ({bossRoom.X}, {bossRoom.Y})");
+
+            bossRoom.isBossRoom =true;
+        }
+    }
 }

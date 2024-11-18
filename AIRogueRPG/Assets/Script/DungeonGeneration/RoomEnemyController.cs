@@ -5,6 +5,7 @@ using UnityEngine;
 public class RoomEnemyController : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject bossPrefab;
     [SerializeField] private GridController grid;
     [SerializeField] private Room room;
 
@@ -13,20 +14,28 @@ public class RoomEnemyController : MonoBehaviour
     private int minEnemyNum = 5;
     private int maxEnemyNum = 10;
 
-    public void GenerateMonster(){
-        int randomNum = Random.Range(minEnemyNum, maxEnemyNum);
-
-        for(int i = 0; i < randomNum; i++){
+    public void GenerateMonster(bool isBossRoom){
+        if(isBossRoom){
             int randomPos = Random.Range(0, grid.availablePoints.Count - 1 );
-            GameObject enemyObject = Instantiate(enemyPrefab, grid.availablePoints[randomPos], Quaternion.identity, transform);
+            GameObject bossObject = Instantiate(bossPrefab, grid.availablePoints[randomPos], Quaternion.identity, transform);
             grid.availablePoints.RemoveAt(randomPos);
-
-            EnemyController enemyController = enemyObject.GetComponent<EnemyController>();
-            enemyController.roomEnemyController = this;
-            enemyController.enemyNum = i;
-            enemyList.Add(enemyController);
         }
-        enemyCount = enemyList.Count;
+        else{
+            int randomNum = Random.Range(minEnemyNum, maxEnemyNum);
+
+            for(int i = 0; i < randomNum; i++){
+                int randomPos = Random.Range(0, grid.availablePoints.Count - 1 );
+                GameObject enemyObject = Instantiate(enemyPrefab, grid.availablePoints[randomPos], Quaternion.identity, transform);
+                grid.availablePoints.RemoveAt(randomPos);
+
+                EnemyController enemyController = enemyObject.GetComponent<EnemyController>();
+                enemyController.roomEnemyController = this;
+                enemyController.enemyNum = i;
+                enemyList.Add(enemyController);
+            }
+            enemyCount = enemyList.Count;
+        }
+        
     }
 
     public void DeleteEnemy(int num){

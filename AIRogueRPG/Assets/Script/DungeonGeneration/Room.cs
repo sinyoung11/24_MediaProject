@@ -8,6 +8,7 @@ public class Room : MonoBehaviour
     public int Height;
     public int X;
     public int Y;
+    public bool isBossRoom = false;
     public RoomEnemyController roomEnemyController;
 
     private bool updatedDoors = false;
@@ -99,4 +100,8 @@ public class Room : MonoBehaviour
     public Room GetBottom() => RoomController.instance.DoesRoomExist(X, Y - 1) ? RoomController.instance.FindRoom(X, Y - 1) : null;
 
     public Vector3 GetRoomCentre() => new Vector3(X * Width, Y * Height);
+
+    public void GenerateMonster(){
+        roomEnemyController.GenerateMonster(isBossRoom);
+    }
 }
