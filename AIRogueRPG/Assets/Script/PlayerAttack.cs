@@ -7,13 +7,15 @@ public class PlayerAttack : MonoBehaviour
 {
     private Vector2 attackDir;
     private Animator animator;
-
     void Start()
     {
         animator = GetComponent<Animator>();
+
     }
 
     public void OnPlayerAttack(InputAction.CallbackContext context) {
+        if (!PlayerStatManager.Instance.isWorking) return;
+
         if (context.phase == InputActionPhase.Started) {
             attackDir = context.ReadValue<Vector2>();
             animator.SetFloat("XDir", attackDir.x);

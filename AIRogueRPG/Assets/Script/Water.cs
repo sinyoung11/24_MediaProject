@@ -8,6 +8,7 @@ public class Water : MonoBehaviour
     private new Rigidbody2D rigidbody;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private AudioSource audioSource;
     private float speed = 2f;
     private float damage = 35.0f;
     private Vector2 shootDir;
@@ -16,6 +17,9 @@ public class Water : MonoBehaviour
 
     [SerializeField]
     private Sprite defaultSprite;
+
+    [SerializeField]
+    private AudioClip waterDrop, waterSplash;
     
     public IObjectPool<GameObject> Pool { get; set; }
     // Start is called before the first frame update
@@ -52,6 +56,7 @@ public class Water : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Player") || collision.CompareTag("Water")) return;
         animator.SetBool("Explode", true);
+        audioSource.PlayOneShot(waterSplash);
         if (collision.CompareTag("Enemy")) {
             EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
             enemy.Damaged(damage);
@@ -62,12 +67,16 @@ public class Water : MonoBehaviour
     public void ShootWater(Vector2 dir) {
         shootDir = dir;
         isShooting = true;
+        
         StartCoroutine(StartExplode());
     }
 
     IEnumerator StartExplode() {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(waterDrop);
         yield return new WaitForSeconds(lifeTime);
         animator.SetBool("Explode", true);
+        audioSource.PlayOneShot(waterSplash);
     }
 
     public void SetWaterSpeed(float speed) {
@@ -76,5 +85,13 @@ public class Water : MonoBehaviour
 
     public float GetWaterSpeed() {
         return speed;
+    }
+
+    public void SetWaterLifeTime(float lifeTime) {
+        this.lifeTime = lifeTime;
+    }
+
+    public float GetWaterLifeTime() {
+        return lifeTime;
     }
 }
