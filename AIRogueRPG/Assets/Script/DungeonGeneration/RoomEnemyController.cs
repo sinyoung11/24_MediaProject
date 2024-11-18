@@ -19,6 +19,10 @@ public class RoomEnemyController : MonoBehaviour
             int randomPos = Random.Range(0, grid.availablePoints.Count - 1 );
             GameObject bossObject = Instantiate(bossPrefab, grid.availablePoints[randomPos], Quaternion.identity, transform);
             grid.availablePoints.RemoveAt(randomPos);
+
+            BossController bossController = bossObject.GetComponent<BossController>();
+            bossController.roomEnemyController = this;
+            bossController.enemyNum = 1;
         }
         else{
             int randomNum = Random.Range(minEnemyNum, maxEnemyNum);

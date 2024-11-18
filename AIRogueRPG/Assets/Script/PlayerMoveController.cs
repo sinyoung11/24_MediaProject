@@ -5,6 +5,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerMoveController : MonoBehaviour
 {
+    private static PlayerMoveController instance;
+    public static PlayerMoveController Instance{
+        get{
+            if(instance == null) return null;
+            return instance;
+        }
+    }
     private float speed = 1f;
     private float collisitionOffset = 0.05f;
     private Vector2 movement, attackDir;
@@ -14,6 +21,17 @@ public class PlayerMoveController : MonoBehaviour
     public bool isMoving { get; private set; }
 
     List<RaycastHit2D> castColisitions = new List<RaycastHit2D>();
+
+    void Awake(){
+        if(instance == null){
+            instance = this;
+        }
+        else{
+            Debug.LogError("PlayerMoveController already has instance");
+            Destroy(this.gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -67,4 +85,7 @@ public class PlayerMoveController : MonoBehaviour
         return speed;
     }
 
+    public void MovePlayerPosition(Vector3 worldPosition){
+        this.transform.position = worldPosition;
+    }
 }
