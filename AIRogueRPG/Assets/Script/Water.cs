@@ -9,7 +9,7 @@ public class Water : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private AudioSource audioSource;
-    private float speed = 2f;
+    private float speed;
     private float damage = 35.0f;
     private Vector2 shootDir;
     private bool isShooting;
