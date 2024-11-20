@@ -58,7 +58,7 @@ public class PlayerStatManager : MonoBehaviour
             else if (i == fullHeartNum) heartSlider.value = currentHp - fullHeartNum;
             else heartSlider.value = 0;
         }
-        if (currentHp <= 0) {
+        if (currentHp <= 0 && GameController.Instance.GetGameStarted()) {
             GameController.Instance.GameEnd(false);
             Debug.Log("Player died");
         }
