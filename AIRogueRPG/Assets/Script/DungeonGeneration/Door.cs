@@ -11,7 +11,7 @@ public class Door : MonoBehaviour
 
     public bool isDoorActive = false;
     public DoorType doorType;
-    public GameObject doorCollider;
+    // public GameObject doorCollider;
     public SpriteRenderer doorSprite;
 
     private GameObject player;
@@ -47,30 +47,26 @@ public class Door : MonoBehaviour
         Room nextRoom = null;
         if (other.tag == "Player")
         {
-            Vector2 newPlayerPosition = transform.position;
 
             switch (doorType)
             {
                 case DoorType.bottom:
-                    newPlayerPosition.y -= widthOffset;
                     nextRoom = connectedRoom?.GetBottom();
+                    nextRoom.MovePlayerPosition(DoorType.top);
                     break;
                 case DoorType.left:
-                    newPlayerPosition.x -= widthOffset;
                     nextRoom = connectedRoom?.GetLeft();
+                    nextRoom.MovePlayerPosition(DoorType.right);
                     break;
                 case DoorType.right:
-                    newPlayerPosition.x += widthOffset;
                     nextRoom = connectedRoom?.GetRight();
+                    nextRoom.MovePlayerPosition(DoorType.left);
                     break;
                 case DoorType.top:
-                    newPlayerPosition.y += widthOffset;
                     nextRoom = connectedRoom?.GetTop();
+                    nextRoom.MovePlayerPosition(DoorType.bottom);
                     break;
             }
-
-            // 플레이어 위치 업데이트
-            player.transform.position = newPlayerPosition;
 
             // 방 이동 처리
             if (nextRoom != null)

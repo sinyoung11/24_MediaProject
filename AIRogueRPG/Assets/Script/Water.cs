@@ -60,7 +60,10 @@ public class Water : MonoBehaviour
         if (collision.CompareTag("Enemy")) {
             EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
             enemy.Damaged(damage);
-
+        }
+        if(collision.CompareTag("Boss")){
+            BossController boss = collision.gameObject.GetComponent<BossController>();
+            boss.Damaged(damage);
         }
     }
 
