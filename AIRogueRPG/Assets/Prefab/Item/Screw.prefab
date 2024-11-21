@@ -105,3 +105,5 @@ MonoBehaviour:
   moveSpeedChange: 0
   attackSpeedChange: 0.25
   bulletSizeChange: 0.25
+  itemFunc: 2
+  amount: 0.5
