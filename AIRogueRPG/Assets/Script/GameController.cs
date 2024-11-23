@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour
     }
 
     private bool gameStarted;
+    private float playTime = 0f;
+    private LevelData levelData;
 
     [SerializeField]
     private GameObject gameEndPopUpUI;
@@ -28,18 +30,29 @@ public class GameController : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-
+        levelData = new LevelData();
     }
-     
+
+    private void Update() {
+        if (gameStarted) {
+            playTime += Time.deltaTime;
+        }
+    }
+
     public void GameEnd(bool isSuccess) {
+        PlayerDataHandler.Instance.GetNextLevelData();
         PlayerStatManager.Instance.SetIsWorking(false);
         if (gameStarted) {
             ShowGameEndPopUp(isSuccess);
         }
         gameStarted = false;
+        
     }
-
+    public bool GetGameStarted() {
+        return gameStarted;
+    }
     public void SetGameStarted(bool started) {
+        if (started) playTime = 0f;
         gameStarted = started;
     }
 
@@ -66,5 +79,18 @@ public class GameController : MonoBehaviour
 
         SceneManager.LoadScene("StartScene");
         
+    }
+
+    public float GetPlayTime() {
+        return playTime;
+    }
+
+    public void SetLevelData(LevelData levelData) {
+        if (levelData == null) return;
+        this.levelData = levelData;
+    }
+
+    public LevelData GetLevelData() {
+        return levelData;
     }
 }

@@ -50,27 +50,40 @@ public class PlayerStatManager : MonoBehaviour
             currentHp -= 1;
         }
 
-        int fullHeartNum = currentHp <= 0 ? 0 : (int)currentHp;
-
-        for(int i=0; i<totalHeartNum; i++) {
-            Slider heartSlider = hp.GetChild(i).GetChild(0).GetComponent<Slider>();
-            if (i < fullHeartNum) heartSlider.value = 1;
-            else if (i == fullHeartNum) heartSlider.value = currentHp - fullHeartNum;
-            else heartSlider.value = 0;
-        }
-        if (currentHp <= 0) {
+        ApplyHpUI();
+        
+        if (currentHp <= 0 && GameController.Instance.GetGameStarted()) {
             GameController.Instance.GameEnd(false);
             Debug.Log("Player died");
         }
     }
 
-    //for testing
-    public void TestWeakAttack() {
-        DamagePlayer(true);
+    private void ApplyHpUI() {
+        int fullHeartNum = currentHp <= 0 ? 0 : (int)currentHp;
+        for (int i = 0; i < totalHeartNum; i++) {
+            Slider heartSlider = hp.GetChild(i).GetChild(0).GetComponent<Slider>();
+            if (i < fullHeartNum) heartSlider.value = 1;
+            else if (i == fullHeartNum) heartSlider.value = currentHp - fullHeartNum;
+            else heartSlider.value = 0;
+        }
     }
 
-    public void TestStrongAttack() {
-        DamagePlayer(false);
+    public void HealPlayer(float amount) {
+        currentHp += amount;
+        if (currentHp >= totalHeartNum) currentHp = totalHeartNum;
+        ApplyHpUI();
+    }
+
+    //for testing
+    public void TestHealItem() {
+        ItemController.Instance.GetItem(ItemFunc.Heal);
+    }
+
+    public void TestAttackSpeedItem() {
+        ItemController.Instance.GetItem(ItemFunc.AttackSpeedUp);
+    }
+    public void TestMovementSpeedItem() {
+        ItemController.Instance.GetItem(ItemFunc.MoveSpeedUp);
     }
 
     public void SetIsWorking(bool isWorking) {
