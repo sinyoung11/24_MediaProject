@@ -16,6 +16,9 @@ public class PlayerStatManager : MonoBehaviour
     [SerializeField]
     private GameObject heartHpPref;
 
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+
     private int totalHeartNum = 3;
     private float currentHp;
     private Transform hp;
@@ -39,9 +42,13 @@ public class PlayerStatManager : MonoBehaviour
             heart.transform.SetParent(hp);
         }
         isWorking = true;
+
+        spriteRenderer = this.GetComponent<SpriteRenderer>();
     }
 
     public void DamagePlayer(bool isWeak) {
+
+        StartCoroutine(FalshRed());
 
         if (isWeak) { // -0.5
             currentHp -= 0.5f;
@@ -56,6 +63,12 @@ public class PlayerStatManager : MonoBehaviour
             GameController.Instance.GameEnd(false);
             Debug.Log("Player died");
         }
+    }
+
+    private IEnumerator FalshRed(){
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.3f);
+        spriteRenderer.color = originalColor;
     }
 
     private void ApplyHpUI() {

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class BatTrackingController : EnemyController
 {
+    private Color originalColor;
     protected override void Start()
     {
         base.Start();
+        originalColor = spriteRenderer.color;
     }
 
     protected override void Update()
@@ -166,7 +168,7 @@ public class BatTrackingController : EnemyController
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        if (canAttack)
+        if (canAttack && other.CompareTag("Player"))
         {
             Attack();
         }
@@ -202,11 +204,18 @@ public class BatTrackingController : EnemyController
 
     public override void Damaged(float amount)
     {
+        StartCoroutine(FlashRed());
         healthPoint -= amount;
         if (healthPoint <= 0.0f)
         {
             Death();
         }
+    }
+
+    private IEnumerator FlashRed(){
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.3f);
+        spriteRenderer.color = originalColor;
     }
 
     public override void Death()
