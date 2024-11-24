@@ -2,15 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BatTrackingController : EnemyController
+public class FlyingBatTrackingController : EnemyController
 {
     private Color originalColor;
     private float originalAnimSpeed;
+    private Vector3 playerPosition;
+    private Transform childSpriteTransform;
+    private Coroutine flyingCoroutine = null;
+    private bool touchObstacle = false;
+
+    public float chargingTime = 1.0f;
+    public float flyingTime = 0.3f;
+
     protected override void Start()
     {
         base.Start();
         originalColor = spriteRenderer.color;
         originalAnimSpeed = animator.speed;
+        childSpriteTransform = spriteRenderer.transform;
     }
 
     protected override void Update()
@@ -26,7 +35,9 @@ public class BatTrackingController : EnemyController
             case (EnemyState.Die):
                 break;
             case (EnemyState.Attack):
-                Follow();
+                if(flyingCoroutine == null){
+                    flyingCoroutine = StartCoroutine(ChargeAndFly());
+                }
                 break;
         }
 
@@ -156,7 +167,6 @@ public class BatTrackingController : EnemyController
     protected override void Follow()
     {
         canAttack = true;
-        animator.speed = originalAnimSpeed * 1.25f;
         transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
 
         Vector3 direction = player.transform.position - transform.position;
@@ -170,11 +180,76 @@ public class BatTrackingController : EnemyController
         }
     }
 
+    private IEnumerator ChargeAndFly()
+    {
+        canAttack = true;
+        // Stop animation and set charging sprite
+        playerPosition = player.transform.position;
+
+        Vector3 direction = playerPosition - transform.position;
+        if (direction.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (direction.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+
+        // Wait for charging time
+        animator.SetBool("chargeStart", true);
+        yield return new WaitForSeconds(chargingTime);
+        animator.SetBool("chargeStart", false);
+        animator.SetBool("flyStart", true);
+
+        // Set flying sprite and start flying
+        direction = playerPosition - transform.position;
+        if (direction.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (direction.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+
+        float elapsedTime = 0f;
+
+        Vector3 startPos = transform.position;
+        while (elapsedTime < flyingTime)
+        {
+            transform.position = Vector3.Lerp(startPos, playerPosition, elapsedTime / flyingTime);
+            elapsedTime += Time.deltaTime;
+
+            if(touchObstacle){
+                break;
+            }
+
+            yield return null;
+        }
+
+        animator.SetBool("flyStart", false);
+
+        animator.speed = originalAnimSpeed;
+        // Wait for 1 second before returning to charging state
+        yield return new WaitForSeconds(chargingTime);
+        flyingCoroutine = null;
+    }
+
     protected override void OnTriggerEnter2D(Collider2D other)
     {
         if (canAttack && other.CompareTag("Player"))
         {
             Attack();
+        }
+        if(other.CompareTag("Obstacle")){
+            touchObstacle = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other) {
+        if(other.CompareTag("Obstacle")){
+            touchObstacle = false;
         }
     }
 
@@ -216,7 +291,8 @@ public class BatTrackingController : EnemyController
         }
     }
 
-    private IEnumerator FlashRed(){
+    private IEnumerator FlashRed()
+    {
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.3f);
         spriteRenderer.color = originalColor;

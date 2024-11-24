@@ -20,7 +20,8 @@ public enum EnemyType
 public class EnemyController : MonoBehaviour
 {
     protected GameObject player;
-    protected SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
+    public Animator animator;
     public int enemyNum = -1;
     public RoomEnemyController roomEnemyController;
     public EnemyState currState = EnemyState.Idle;
@@ -48,7 +49,6 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
-        spriteRenderer = this.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame

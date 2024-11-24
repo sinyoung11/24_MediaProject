@@ -44,6 +44,7 @@ public class PlayerStatManager : MonoBehaviour
         isWorking = true;
 
         spriteRenderer = this.GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
     }
 
     public void DamagePlayer(bool isWeak) {
