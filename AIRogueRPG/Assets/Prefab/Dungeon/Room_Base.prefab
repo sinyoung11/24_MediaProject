@@ -1311,7 +1311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0bdb5aba82ea24399ec195a5d3b2b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 5051726810918457013, guid: d38621d3057d01a4783b753e0ffe2f24, type: 3}
+  enemyPrefab: {fileID: 5051726810918457013, guid: d0058e83d2ae26047b69f704f687dbf8, type: 3}
   bossPrefab: {fileID: 5051726810918457013, guid: efb5503e92a6bc94b9d00c0bd465e8f1, type: 3}
   grid: {fileID: 4983463525492132351}
   room: {fileID: 4983463526324811719}

@@ -17,13 +17,13 @@ public class EnemyDetectCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.CompareTag("Obstacle")){
-            enemyController.ChangeDetectCollider(detectDir, true);
+            enemyController?.ChangeDetectCollider(detectDir, true);
         }
     }
 
     private void OnTriggerExit2D(Collider2D other) {
         if(other.CompareTag("Obstacle")){
-            enemyController.ChangeDetectCollider(detectDir, false);
+            enemyController?.ChangeDetectCollider(detectDir, false);
         }
     }
 
