@@ -291,6 +291,7 @@ public class BossController : EnemyController
 
     public override void Death()
     {
+        GameController.Instance.GameEnd(true);
         roomEnemyController.DeleteEnemy(enemyNum);
         Destroy(gameObject);
     }
