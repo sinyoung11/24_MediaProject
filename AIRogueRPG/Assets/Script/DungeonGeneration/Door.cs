@@ -31,11 +31,11 @@ public class Door : MonoBehaviour
     public void LockDoor(bool goLock){
         Color color = doorSprite.color;
         if(goLock){
-            color = Color.black;
+            color.a = 0.0f;
             isDoorActive = false;
         }
         else{
-            color = Color.red;
+            color.a = 1.0f;
             isDoorActive = true;
         }
         doorSprite.color = color;

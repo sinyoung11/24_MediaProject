@@ -456,11 +456,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 379204957188873820, guid: c9e9b36a6a8e4c54aa0e37def6981123, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.2586513
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 379204957188873820, guid: c9e9b36a6a8e4c54aa0e37def6981123, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.0089376
+      value: -3.57
       objectReference: {fileID: 0}
     - target: {fileID: 379204957188873820, guid: c9e9b36a6a8e4c54aa0e37def6981123, type: 3}
       propertyPath: m_LocalPosition.z
@@ -636,7 +636,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
