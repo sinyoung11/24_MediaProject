@@ -22,10 +22,11 @@ public class RoomEnemyController : MonoBehaviour
     private int maxEnemyNum = 9;
 
     public void GenerateMonster(bool isBossRoom){
+        
         if(isBossRoom){
-            int randomPos = Random.Range(0, grid.availableGrids.Count - 1 );
-            GameObject bossObject = Instantiate(bossPrefab, grid.availableGrids[randomPos].transform.position, Quaternion.identity, transform);
-            grid.availableGrids.RemoveAt(randomPos);
+            int centerPos = grid.availableGrids.Count / 2;
+            GameObject bossObject = Instantiate(bossPrefab, grid.availableGrids[centerPos].transform.position, Quaternion.identity, transform);
+            grid.availableGrids.RemoveAt(centerPos);
 
             BossController bossController = bossObject.GetComponent<BossController>();
             bossController.roomEnemyController = this;

@@ -6,11 +6,17 @@ public class GridController : MonoBehaviour
 {
     public List<Grid> availableGrids = new List<Grid>();
     private List<Grid> delGrids = new List<Grid>();
+    public GameObject bossObstacles;
     private int gridWidth = 14;
     private int gridHeight = 6;
     public int obstacleCount = 8;
 
-    public void GenerateObstacle(){
+    public void GenerateObstacle(bool isBossRoom){
+        if(isBossRoom){
+            bossObstacles.SetActive(true);
+            return;
+        }
+
         int centerMinX = gridWidth / 2 - 2;
         int centerMaxX = gridWidth / 2 + 2;
         int centerMinY = gridHeight / 2 - 1;

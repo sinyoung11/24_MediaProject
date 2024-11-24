@@ -143,6 +143,6 @@ public class Room : MonoBehaviour
     }
 
     public void GenerateObstacle(){
-        gridController.GenerateObstacle();
+        gridController.GenerateObstacle(isBossRoom);
     }
 }
