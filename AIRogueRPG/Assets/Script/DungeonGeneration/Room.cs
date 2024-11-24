@@ -10,6 +10,7 @@ public class Room : MonoBehaviour
     public int Y;
     public bool isBossRoom = false;
     public RoomEnemyController roomEnemyController;
+    public GridController gridController;
 
     private bool updatedDoors = false;
 
@@ -139,5 +140,9 @@ public class Room : MonoBehaviour
 
     public void GenerateMonster(){
         roomEnemyController.GenerateMonster(isBossRoom);
+    }
+
+    public void GenerateObstacle(){
+        gridController.GenerateObstacle();
     }
 }

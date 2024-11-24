@@ -87,6 +87,7 @@ public class RoomController : MonoBehaviour
     public void OnPlayerEnterRoom(Room room)
     {
         currRoom = room;
+        currRoom.GenerateObstacle();
         currRoom.GenerateMonster();
         currRoom.SetCameraBoundary();
         Debug.Log("Player entered room at: " + room.X + ", " + room.Y);

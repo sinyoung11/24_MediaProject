@@ -16,9 +16,9 @@ public class RoomEnemyController : MonoBehaviour
 
     public void GenerateMonster(bool isBossRoom){
         if(isBossRoom){
-            int randomPos = Random.Range(0, grid.availablePoints.Count - 1 );
-            GameObject bossObject = Instantiate(bossPrefab, grid.availablePoints[randomPos], Quaternion.identity, transform);
-            grid.availablePoints.RemoveAt(randomPos);
+            int randomPos = Random.Range(0, grid.availableGrids.Count - 1 );
+            GameObject bossObject = Instantiate(bossPrefab, grid.availableGrids[randomPos].transform.position, Quaternion.identity, transform);
+            grid.availableGrids.RemoveAt(randomPos);
 
             BossController bossController = bossObject.GetComponent<BossController>();
             bossController.roomEnemyController = this;
@@ -28,9 +28,9 @@ public class RoomEnemyController : MonoBehaviour
             int randomNum = Random.Range(minEnemyNum, maxEnemyNum);
 
             for(int i = 0; i < randomNum; i++){
-                int randomPos = Random.Range(0, grid.availablePoints.Count - 1 );
-                GameObject enemyObject = Instantiate(enemyPrefab, grid.availablePoints[randomPos], Quaternion.identity, transform);
-                grid.availablePoints.RemoveAt(randomPos);
+                int randomPos = Random.Range(0, grid.availableGrids.Count - 1 );
+                GameObject enemyObject = Instantiate(enemyPrefab, grid.availableGrids[randomPos].transform.position, Quaternion.identity, transform);
+                grid.availableGrids.RemoveAt(randomPos);
 
                 EnemyController enemyController = enemyObject.GetComponent<EnemyController>();
                 enemyController.roomEnemyController = this;
