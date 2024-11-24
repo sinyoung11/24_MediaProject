@@ -53,9 +53,11 @@ public class PlayerStatManager : MonoBehaviour
 
         if (isWeak) { // -0.5
             currentHp -= 0.5f;
+            GameController.Instance.AddLostHealth(0.5f);
         }
         else { // 1
             currentHp -= 1;
+            GameController.Instance.AddLostHealth(1.0f);
         }
 
         ApplyHpUI();

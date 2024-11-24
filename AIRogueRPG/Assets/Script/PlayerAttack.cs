@@ -12,10 +12,10 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField]
     private Image coolDownImg;
 
-    private float totalCoolTime = 2f;
+    private float totalCoolTime = 0.5f;
     private float coolTime;
     private bool startCoolDown, fillCoolTime;
-    private float attackSpeed = 2f;
+    private float attackSpeed = 5f;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -71,6 +71,7 @@ public class PlayerAttack : MonoBehaviour
                 water.transform.rotation = Quaternion.identity;
                 water.GetComponent<Water>().SetWaterSpeed(attackSpeed);
                 water.GetComponent<Water>().ShootWater(attackDir);
+                GameController.Instance.AddShooWater();
             }
         }
        

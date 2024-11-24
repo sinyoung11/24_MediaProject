@@ -13,7 +13,7 @@ public class Water : MonoBehaviour
     private float damage = 35.0f;
     private Vector2 shootDir;
     private bool isShooting;
-    private float lifeTime = 2f;
+    private float lifeTime = 10f;
 
     [SerializeField]
     private Sprite defaultSprite;
@@ -60,10 +60,12 @@ public class Water : MonoBehaviour
         if (collision.CompareTag("Enemy")) {
             EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
             enemy.Damaged(damage);
+            GameController.Instance.AddHitWater();
         }
         if(collision.CompareTag("Boss")){
             BossController boss = collision.gameObject.GetComponent<BossController>();
             boss.Damaged(damage);
+            GameController.Instance.AddHitWater();
         }
     }
 

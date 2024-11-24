@@ -29,6 +29,11 @@ public class GameController : MonoBehaviour
 
     private bool gameStarted;
     private float playTime = 0f;
+    GameEndPopUpUI gameEndPopUPUIScript;
+    private float lostHealth = 0;
+    private int shootWater = 0;
+    private int hitWater = 0;
+    private bool isWaitingGrade = false;
     private LevelData levelData;
     private string sendUrl = "http://localhost:5000/process_playtime";
 
@@ -58,6 +63,7 @@ public class GameController : MonoBehaviour
             ShowGameEndPopUp(isSuccess);
         }
         gameStarted = false;
+        isWaitingGrade = true;
         StartCoroutine(SendData(playTime));
 
     }
@@ -65,19 +71,32 @@ public class GameController : MonoBehaviour
         return gameStarted;
     }
     public void SetGameStarted(bool started) {
-        if (started) playTime = 0f;
+        if (started) {
+            playTime = 0f;
+            lostHealth = 0f;
+            shootWater = 0;
+            hitWater = 0;
+        }
         gameStarted = started;
     }
 
     private void ShowGameEndPopUp(bool isSuccess) {
         GameObject popUpUI = Instantiate(gameEndPopUpUI, FindAnyObjectByType<Canvas>().transform);
-        TextMeshProUGUI resultText = popUpUI.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        gameEndPopUPUIScript = popUpUI.GetComponent<GameEndPopUpUI>();
+        TextMeshProUGUI resultText = gameEndPopUPUIScript.resultText;
         resultText.text = isSuccess ? "Game Clear" : "Game Over";
-        Transform timer = popUpUI.transform.GetChild(3);
-        StartCoroutine(GameEndUITimer(timer.GetChild(0).GetComponent<Image>(), 3f));
+        gameEndPopUPUIScript.StartDesc(playTime, lostHealth, shootWater, hitWater);
+        StartCoroutine(GameEndUITimer(gameEndPopUPUIScript.timerImage, 3f));
     }
 
     IEnumerator GameEndUITimer(Image timerImg, float time) {
+        float stepTimer = 0.0f;
+        while(stepTimer <= 10.0f){
+            // if(!isWaitingGrade) break;
+            stepTimer += Time.deltaTime;
+            yield return null;
+        }
+        
         bool timerWorking = true;
         float timerValue = time;
         while (timerWorking) {
@@ -94,13 +113,40 @@ public class GameController : MonoBehaviour
         
     }
 
+    public void AddLostHealth(float damage){
+        lostHealth += damage;
+    }
+
+    public void AddShooWater(){
+        shootWater++;
+    }
+
+    public void AddHitWater(){
+        hitWater++;
+    }
+
+    public float GetLostHealth(){
+        return lostHealth;
+    }
+
+    public int GetShootWater(){
+        return shootWater;
+    }
+
+    public int GethitWater(){
+        return hitWater;
+    }
+
     public float GetPlayTime() {
         return playTime;
     }
 
+
     public void SetLevelData(LevelData levelData) {
         if (levelData == null) return;
         this.levelData = levelData;
+        isWaitingGrade = false;
+        gameEndPopUPUIScript.SetGrade(levelData.difficulty);
     }
 
     public LevelData GetLevelData() {
