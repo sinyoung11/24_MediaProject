@@ -11,8 +11,8 @@ public class RoomEnemyController : MonoBehaviour
 
     private List<EnemyController> enemyList = new List<EnemyController>();
     private int enemyCount = -1;
-    private int minEnemyNum = 5;
-    private int maxEnemyNum = 10;
+    private int minEnemyNum = 3;
+    private int maxEnemyNum = 5;
 
     public void GenerateMonster(bool isBossRoom){
         if(isBossRoom){

@@ -5,7 +5,8 @@ using UnityEngine;
 public class BulletController : MonoBehaviour
 {
     public float lifeTime;
-    public bool isEnemyBullet = false;
+
+    private float bulletSpeed;
 
     private Vector2 lastPos;
     private Vector2 curPos;
@@ -14,30 +15,26 @@ public class BulletController : MonoBehaviour
     void Start() 
     {
         StartCoroutine(DeathDelay());
-        if(!isEnemyBullet)
-        { 
-            // TO DO Bullset Size Control
-            // transform.localScale = new Vector2(GameController.BulletSize, GameController.BulletSize);
-        }
     }
 
     void Update()
     {
-        if(isEnemyBullet)
+        curPos = transform.position;
+        transform.position = Vector2.MoveTowards(transform.position, playerPos, bulletSpeed * Time.deltaTime);
+        if(curPos == lastPos)
         {
-            curPos = transform.position;
-            transform.position = Vector2.MoveTowards(transform.position, playerPos, 5f * Time.deltaTime);
-            if(curPos == lastPos)
-            {
-                Destroy(gameObject);
-            }
-            lastPos = curPos;
+            Destroy(gameObject);
         }
+        lastPos = curPos;
     }
 
     public void GetPlayer(Transform player)
     {
         playerPos = player.position;
+    }
+
+    public void GetBulletSpeed(float speed){
+        bulletSpeed = speed;
     }
 
     IEnumerator DeathDelay()
@@ -48,17 +45,15 @@ public class BulletController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.tag == "Enemy" && !isEnemyBullet)
-        {
-            col.gameObject.GetComponent<EnemyController>().Death();
+        if(col.CompareTag("Player")){
+            // TO DO Damage To Player
+            PlayerStatManager.Instance.DamagePlayer(true);
+            Destroy(gameObject);
+        }
+        if(col.CompareTag("Obstacle")){
             Destroy(gameObject);
         }
 
-        if(col.tag == "Player" && isEnemyBullet)
-        {
-            // TO DO Damage To Player
-            // GameController.DamagePlayer(1);
-            Destroy(gameObject);
-        }
+        
     }
 }

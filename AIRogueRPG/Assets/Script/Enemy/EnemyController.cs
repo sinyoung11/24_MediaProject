@@ -30,7 +30,6 @@ public class EnemyController : MonoBehaviour
     public float range;
     public float speed;
     public float attackRange;
-    public float bulletSpeed;
     public float coolDown;
 
     protected bool upDetect = false;

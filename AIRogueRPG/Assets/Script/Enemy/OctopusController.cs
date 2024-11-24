@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlyingBatTrackingController : EnemyController
+public class OctopusController : EnemyController
 {
-    private Color originalColor;
+    [SerializeField]private Color originalColor;
     private float originalAnimSpeed;
-    private Vector3 playerPosition;
     private Transform childSpriteTransform;
-    private Coroutine flyingCoroutine = null;
-    private bool touchObstacle = false;
-
-    public float chargingTime = 1.0f;
-    public float flyingTime = 0.3f;
+    
+    public float bulletSpeed;
 
     protected override void Start()
     {
@@ -35,9 +31,8 @@ public class FlyingBatTrackingController : EnemyController
             case (EnemyState.Die):
                 break;
             case (EnemyState.Attack):
-                if(flyingCoroutine == null){
-                    flyingCoroutine = StartCoroutine(ChargeAndFly());
-                }
+                Wander();
+                Attack();
                 break;
         }
 
@@ -180,76 +175,18 @@ public class FlyingBatTrackingController : EnemyController
         }
     }
 
-    private IEnumerator ChargeAndFly()
-    {
-        canAttack = true;
-        // Stop animation and set charging sprite
-        playerPosition = player.transform.position;
-
-        Vector3 direction = playerPosition - transform.position;
-        if (direction.x > 0)
-        {
-            spriteRenderer.flipX = false;
-        }
-        else if (direction.x < 0)
-        {
-            spriteRenderer.flipX = true;
-        }
-
-        // Wait for charging time
-        animator.SetBool("chargeStart", true);
-        yield return new WaitForSeconds(chargingTime);
-        animator.SetBool("chargeStart", false);
-        animator.SetBool("flyStart", true);
-
-        // Set flying sprite and start flying
-        direction = playerPosition - transform.position;
-        if (direction.x > 0)
-        {
-            spriteRenderer.flipX = false;
-        }
-        else if (direction.x < 0)
-        {
-            spriteRenderer.flipX = true;
-        }
-
-        float elapsedTime = 0f;
-
-        Vector3 startPos = transform.position;
-        while (elapsedTime < flyingTime)
-        {
-            transform.position = Vector3.Lerp(startPos, playerPosition, elapsedTime / flyingTime);
-            elapsedTime += Time.deltaTime;
-
-            if(touchObstacle){
-                break;
-            }
-
-            yield return null;
-        }
-
-        animator.SetBool("flyStart", false);
-
-        animator.speed = originalAnimSpeed;
-        // Wait for 1 second before returning to charging state
-        yield return new WaitForSeconds(chargingTime);
-        flyingCoroutine = null;
-    }
-
     protected override void OnTriggerEnter2D(Collider2D other)
     {
         if (canAttack && other.CompareTag("Player"))
         {
-            Attack();
+            
         }
         if(other.CompareTag("Obstacle")){
-            touchObstacle = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D other) {
         if(other.CompareTag("Obstacle")){
-            touchObstacle = false;
         }
     }
 
@@ -257,7 +194,10 @@ public class FlyingBatTrackingController : EnemyController
     {
         if (!coolDownAttack)
         {
-            PlayerStatManager.Instance.DamagePlayer(true);
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
+            bullet.GetComponent<BulletController>().GetPlayer(player.transform);
+            bullet.AddComponent<Rigidbody2D>().gravityScale = 0;
+            bullet.GetComponent<BulletController>().GetBulletSpeed(bulletSpeed);
             StartCoroutine(CoolDown());
         }
     }

@@ -182,20 +182,8 @@ public class BatTrackingController : EnemyController
     {
         if (!coolDownAttack)
         {
-            switch (enemyType)
-            {
-                case (EnemyType.Melee):
-                    PlayerStatManager.Instance.DamagePlayer(true);
-                    StartCoroutine(CoolDown());
-                    break;
-                case (EnemyType.Ranged):
-                    GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
-                    bullet.GetComponent<BulletController>().GetPlayer(player.transform);
-                    bullet.AddComponent<Rigidbody2D>().gravityScale = 0;
-                    bullet.GetComponent<BulletController>().isEnemyBullet = true;
-                    StartCoroutine(CoolDown());
-                    break;
-            }
+            PlayerStatManager.Instance.DamagePlayer(true);
+            StartCoroutine(CoolDown());
         }
     }
 

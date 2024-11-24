@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 7046209641194159826}
   - component: {fileID: 625733120402369708}
   m_Layer: 0
-  m_Name: BatSprite
+  m_Name: OctopusSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,7 +120,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5051726810918457017}
@@ -166,7 +166,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1d31223874efcf04ebac80a822670943, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 01dee3da069aaa94fa33838a9dc69048, type: 3}
   m_Color: {r: 0.46666667, g: 0.83137256, b: 0.48329255, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -187,7 +187,7 @@ Animator:
   m_GameObject: {fileID: 1216645116407516038}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 735679e8dd6eac44390b381f6d79e1a7, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0574a9b0933447d47865a6e45d52a8ad, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -208,9 +208,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5051726810918457017}
   - component: {fileID: 3310164685489057553}
-  - component: {fileID: 4809599275094821696}
+  - component: {fileID: 8771271486608056811}
   m_Layer: 0
-  m_Name: Bat_Flying
+  m_Name: Octopus
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,7 +226,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.02, y: 2.68, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8788398063166590021}
@@ -278,7 +278,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2969028, y: 0.3465495}
   m_EdgeRadius: 0
---- !u!114 &4809599275094821696
+--- !u!114 &8771271486608056811
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -287,7 +287,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5051726810918457013}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d1a7bc2d71d1d649a3fe3ce3dd0b2f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d30ba0e51870894a961d38f106ed02e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 7046209641194159826}
@@ -296,15 +296,14 @@ MonoBehaviour:
   roomEnemyController: {fileID: 0}
   currState: 0
   enemyType: 0
-  range: 1
+  range: 5
   speed: 1
-  attackRange: 2
-  bulletSpeed: 0
+  attackRange: 4
   coolDown: 1
   notInRoom: 0
-  bulletPrefab: {fileID: 0}
-  chargingTime: 1
-  flyingTime: 0.3
+  bulletPrefab: {fileID: 8912613753944397765, guid: 73e67feb8de4885488ef1d69e33b9856, type: 3}
+  originalColor: {r: 0, g: 0, b: 0, a: 0}
+  bulletSpeed: 1
 --- !u!1 &5603142356219929699
 GameObject:
   m_ObjectHideFlags: 0
