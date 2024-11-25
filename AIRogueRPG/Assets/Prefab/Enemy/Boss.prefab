@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3310164685489057553}
   - component: {fileID: -2059966859596226503}
   - component: {fileID: 3388929464025924862}
+  - component: {fileID: 6767940610346221411}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Boss
@@ -116,7 +117,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.0019688793, y: -0.009187996}
@@ -150,14 +151,15 @@ MonoBehaviour:
   roomEnemyController: {fileID: 0}
   currState: 0
   enemyType: 0
+  healthPoint: 500
   range: 10
-  speed: 1
+  speed: 10
   attackRange: 10
   coolDown: 1
   notInRoom: 0
   bulletPrefab: {fileID: 8912613753944397765, guid: 73e67feb8de4885488ef1d69e33b9856, type: 3}
   originalColor: {r: 0, g: 0, b: 0, a: 0}
-  bulletSpeed: 3
+  bulletSpeed: 4
   missilePrefab: {fileID: 8912613753944397765, guid: 52ddb25b7ddeb0d42a4ac557dc0d2cfe, type: 3}
 --- !u!95 &3388929464025924862
 Animator:
@@ -180,3 +182,30 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &6767940610346221411
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5051726810918457013}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
