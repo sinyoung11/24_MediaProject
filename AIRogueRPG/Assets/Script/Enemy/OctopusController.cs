@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class OctopusController : EnemyController
 {
     [SerializeField]private Color originalColor;
     private float originalAnimSpeed;
     private Transform childSpriteTransform;
+    private Rigidbody2D rb;
     
     public float bulletSpeed;
 
@@ -16,6 +18,7 @@ public class OctopusController : EnemyController
         originalColor = spriteRenderer.color;
         originalAnimSpeed = animator.speed;
         childSpriteTransform = spriteRenderer.transform;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     protected override void Update()
@@ -54,6 +57,16 @@ public class OctopusController : EnemyController
         else
         {
             currState = EnemyState.Idle;
+        }
+
+        Vector3 direction = player.transform.position - transform.position;
+        if (direction.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (direction.x < 0)
+        {
+            spriteRenderer.flipX = true;
         }
     }
 
@@ -101,15 +114,8 @@ public class OctopusController : EnemyController
         else
         {
             Vector3 direction = (targetPosition - transform.position).normalized;
-            transform.position += direction * speed * 0.5f * Time.deltaTime;
-            if (direction.x > 0)
-            {
-                spriteRenderer.flipX = false;
-            }
-            else if (direction.x < 0)
-            {
-                spriteRenderer.flipX = true;
-            }
+            Vector2 newPosition = rb.position + (Vector2)(direction * speed * 0.5f * Time.deltaTime);
+            rb.MovePosition(newPosition);
 
             // Check for collisions and change direction if needed
             if (upDetect && direction.y > 0)
@@ -162,17 +168,8 @@ public class OctopusController : EnemyController
     protected override void Follow()
     {
         canAttack = true;
-        transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
-
-        Vector3 direction = player.transform.position - transform.position;
-        if (direction.x > 0)
-        {
-            spriteRenderer.flipX = false;
-        }
-        else if (direction.x < 0)
-        {
-            spriteRenderer.flipX = true;
-        }
+        Vector2 newPosition = Vector2.MoveTowards(rb.position, player.transform.position, speed * Time.deltaTime);
+        rb.MovePosition(newPosition);
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)

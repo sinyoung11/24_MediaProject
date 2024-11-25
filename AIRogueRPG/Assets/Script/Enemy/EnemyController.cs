@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour
     public RoomEnemyController roomEnemyController;
     public EnemyState currState = EnemyState.Idle;
     public EnemyType enemyType;
-    protected float healthPoint = 100.0f;
+    public float healthPoint = 100.0f;
     public float range;
     public float speed;
     public float attackRange;

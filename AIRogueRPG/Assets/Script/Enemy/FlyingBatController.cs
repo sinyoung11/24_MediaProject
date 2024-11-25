@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class FlyingBatTrackingController : EnemyController
 {
     private Color originalColor;
@@ -10,6 +11,7 @@ public class FlyingBatTrackingController : EnemyController
     private Transform childSpriteTransform;
     private Coroutine flyingCoroutine = null;
     private bool touchObstacle = false;
+    private Rigidbody2D rb;
 
     public float chargingTime = 1.0f;
     public float flyingTime = 0.3f;
@@ -20,10 +22,13 @@ public class FlyingBatTrackingController : EnemyController
         originalColor = spriteRenderer.color;
         originalAnimSpeed = animator.speed;
         childSpriteTransform = spriteRenderer.transform;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     protected override void Update()
     {
+        if(GameController.Instance.GetPlayTime() < 0.5f) return;
+
         switch (currState)
         {
             case (EnemyState.Wander):
@@ -59,6 +64,16 @@ public class FlyingBatTrackingController : EnemyController
         else
         {
             currState = EnemyState.Idle;
+        }
+
+        Vector3 direction = player.transform.position - transform.position;
+        if (direction.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (direction.x < 0)
+        {
+            spriteRenderer.flipX = true;
         }
     }
 
@@ -106,7 +121,8 @@ public class FlyingBatTrackingController : EnemyController
         else
         {
             Vector3 direction = (targetPosition - transform.position).normalized;
-            transform.position += direction * speed * 0.5f * Time.deltaTime;
+            Vector2 newPosition = rb.position + (Vector2)(direction * speed * 0.5f * Time.deltaTime);
+            rb.MovePosition(newPosition);
             if (direction.x > 0)
             {
                 spriteRenderer.flipX = false;
@@ -167,7 +183,8 @@ public class FlyingBatTrackingController : EnemyController
     protected override void Follow()
     {
         canAttack = true;
-        transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+        Vector2 newPosition = Vector2.MoveTowards(rb.position, player.transform.position, speed * Time.deltaTime);
+        rb.MovePosition(newPosition);
 
         Vector3 direction = player.transform.position - transform.position;
         if (direction.x > 0)
@@ -187,14 +204,6 @@ public class FlyingBatTrackingController : EnemyController
         playerPosition = player.transform.position;
 
         Vector3 direction = playerPosition - transform.position;
-        if (direction.x > 0)
-        {
-            spriteRenderer.flipX = false;
-        }
-        else if (direction.x < 0)
-        {
-            spriteRenderer.flipX = true;
-        }
 
         // Wait for charging time
         animator.SetBool("chargeStart", true);
@@ -215,10 +224,11 @@ public class FlyingBatTrackingController : EnemyController
 
         float elapsedTime = 0f;
 
-        Vector3 startPos = transform.position;
+        Vector2 startPos = rb.position;
         while (elapsedTime < flyingTime)
         {
-            transform.position = Vector3.Lerp(startPos, playerPosition, elapsedTime / flyingTime);
+            Vector2 newPosition = Vector2.Lerp(startPos, playerPosition, elapsedTime / flyingTime);
+            rb.MovePosition(newPosition);
             elapsedTime += Time.deltaTime;
 
             if(touchObstacle){
