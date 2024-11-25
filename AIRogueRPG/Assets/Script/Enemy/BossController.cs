@@ -95,24 +95,6 @@ public class BossController : EnemyController
         chooseDir = false;
     }
 
-    public override void ChangeDetectCollider(DetectDir detectDir, bool isActive)
-    {
-        switch (detectDir)
-        {
-            case DetectDir.Up:
-                upDetect = isActive;
-                break;
-            case DetectDir.Down:
-                downDetect = isActive;
-                break;
-            case DetectDir.Left:
-                leftDetect = isActive;
-                break;
-            case DetectDir.Right:
-                rightDetect = isActive;
-                break;
-        }
-    }
 
     protected override void Wander()
     {
@@ -135,54 +117,9 @@ public class BossController : EnemyController
             {
                 spriteRenderer.flipX = true;
             }
-
-            // Check for collisions and change direction if needed
-            if (upDetect && direction.y > 0)
-            {
-                ChooseAlternativeDirection();
-            }
-            else if (downDetect && direction.y < 0)
-            {
-                ChooseAlternativeDirection();
-            }
-            else if (leftDetect && direction.x < 0)
-            {
-                ChooseAlternativeDirection();
-            }
-            else if (rightDetect && direction.x > 0)
-            {
-                ChooseAlternativeDirection();
-            }
         }
     }
 
-    protected override void ChooseAlternativeDirection()
-    {
-        List<Vector3> possibleDirections = new List<Vector3>();
-
-        if (!upDetect)
-        {
-            possibleDirections.Add(Vector3.up);
-        }
-        if (!downDetect)
-        {
-            possibleDirections.Add(Vector3.down);
-        }
-        if (!leftDetect)
-        {
-            possibleDirections.Add(Vector3.left);
-        }
-        if (!rightDetect)
-        {
-            possibleDirections.Add(Vector3.right);
-        }
-
-        if (possibleDirections.Count > 0)
-        {
-            Vector3 chosenDirection = possibleDirections[Random.Range(0, possibleDirections.Count)];
-            targetPosition = transform.position + chosenDirection * 5f;
-        }
-    }
 
     protected override void Follow()
     {
@@ -193,17 +130,17 @@ public class BossController : EnemyController
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        if (canAttack && other.CompareTag("Player"))
-        {
+        // if (canAttack && other.CompareTag("Player"))
+        // {
             
-        }
-        if(other.CompareTag("Obstacle")){
-        }
+        // }
+        // if(other.CompareTag("Obstacle")){
+        // }
     }
 
     private void OnTriggerExit2D(Collider2D other) {
-        if(other.CompareTag("Obstacle")){
-        }
+        // if(other.CompareTag("Obstacle")){
+        // }
     }
 
     protected override void Attack()

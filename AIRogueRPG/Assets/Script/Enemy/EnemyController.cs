@@ -32,11 +32,6 @@ public class EnemyController : MonoBehaviour
     public float attackRange;
     public float coolDown;
 
-    protected bool upDetect = false;
-    protected bool downDetect = false;
-    protected bool leftDetect = false;
-    protected bool rightDetect = false;
-
     protected bool chooseDir = false;
     protected bool dead = false;
     protected bool canAttack = false;
@@ -57,11 +52,9 @@ public class EnemyController : MonoBehaviour
 
     protected virtual IEnumerator ChooseTargetPosition() { yield return null; }
 
-    public virtual void ChangeDetectCollider(DetectDir detectDir, bool isActive) {}
 
     protected virtual void Wander() {}
 
-    protected virtual void ChooseAlternativeDirection() {}
 
     protected virtual void Follow() {}
 

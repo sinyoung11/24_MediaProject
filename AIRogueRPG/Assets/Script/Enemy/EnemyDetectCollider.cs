@@ -12,19 +12,20 @@ public enum DetectDir{
 
 public class EnemyDetectCollider : MonoBehaviour
 {
+    // NO More USE This Code
     [SerializeField] private EnemyController enemyController;
     [SerializeField] private DetectDir detectDir;
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if(other.CompareTag("Obstacle")){
-            enemyController?.ChangeDetectCollider(detectDir, true);
-        }
+        // if(other.CompareTag("Obstacle")){
+        //     enemyController?.ChangeDetectCollider(detectDir, true);
+        // }
     }
 
     private void OnTriggerExit2D(Collider2D other) {
-        if(other.CompareTag("Obstacle")){
-            enemyController?.ChangeDetectCollider(detectDir, false);
-        }
+        // if(other.CompareTag("Obstacle")){
+        //     enemyController?.ChangeDetectCollider(detectDir, false);
+        // }
     }
 
 }

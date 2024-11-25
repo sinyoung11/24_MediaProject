@@ -84,24 +84,6 @@ public class OctopusController : EnemyController
         chooseDir = false;
     }
 
-    public override void ChangeDetectCollider(DetectDir detectDir, bool isActive)
-    {
-        switch (detectDir)
-        {
-            case DetectDir.Up:
-                upDetect = isActive;
-                break;
-            case DetectDir.Down:
-                downDetect = isActive;
-                break;
-            case DetectDir.Left:
-                leftDetect = isActive;
-                break;
-            case DetectDir.Right:
-                rightDetect = isActive;
-                break;
-        }
-    }
 
     protected override void Wander()
     {
@@ -116,54 +98,9 @@ public class OctopusController : EnemyController
             Vector3 direction = (targetPosition - transform.position).normalized;
             Vector2 newPosition = rb.position + (Vector2)(direction * speed * 0.5f * Time.deltaTime);
             rb.MovePosition(newPosition);
-
-            // Check for collisions and change direction if needed
-            if (upDetect && direction.y > 0)
-            {
-                ChooseAlternativeDirection();
-            }
-            else if (downDetect && direction.y < 0)
-            {
-                ChooseAlternativeDirection();
-            }
-            else if (leftDetect && direction.x < 0)
-            {
-                ChooseAlternativeDirection();
-            }
-            else if (rightDetect && direction.x > 0)
-            {
-                ChooseAlternativeDirection();
-            }
         }
     }
 
-    protected override void ChooseAlternativeDirection()
-    {
-        List<Vector3> possibleDirections = new List<Vector3>();
-
-        if (!upDetect)
-        {
-            possibleDirections.Add(Vector3.up);
-        }
-        if (!downDetect)
-        {
-            possibleDirections.Add(Vector3.down);
-        }
-        if (!leftDetect)
-        {
-            possibleDirections.Add(Vector3.left);
-        }
-        if (!rightDetect)
-        {
-            possibleDirections.Add(Vector3.right);
-        }
-
-        if (possibleDirections.Count > 0)
-        {
-            Vector3 chosenDirection = possibleDirections[Random.Range(0, possibleDirections.Count)];
-            targetPosition = transform.position + chosenDirection * 5f;
-        }
-    }
 
     protected override void Follow()
     {
