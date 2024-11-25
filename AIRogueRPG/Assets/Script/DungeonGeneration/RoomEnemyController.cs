@@ -104,6 +104,7 @@ public class RoomEnemyController : MonoBehaviour
     private void CheckDoor(){
         if(enemyCount <=0){
             room.UnLockDoor();
+            room.SpawnItem();
         }
     }
 }

@@ -9,6 +9,7 @@ public class Room : MonoBehaviour
     public int X;
     public int Y;
     public bool isBossRoom = false;
+    public ItemSpawner itemSpawner;
     public RoomEnemyController roomEnemyController;
     public GridController gridController;
 
@@ -144,5 +145,9 @@ public class Room : MonoBehaviour
 
     public void GenerateObstacle(){
         gridController.GenerateObstacle(isBossRoom);
+    }
+
+    public void SpawnItem(){
+        itemSpawner.SpawnItem();
     }
 }
