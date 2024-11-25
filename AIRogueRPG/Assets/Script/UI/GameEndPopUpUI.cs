@@ -34,6 +34,9 @@ public class GameEndPopUpUI : MonoBehaviour
         shootWaterDesc.text += shootWater.ToString();
 
         yield return halfSec;
+        if(hitWater > shootWater) {
+            hitWater = shootWater;
+        }
         hitWaterDesc.text += hitWater.ToString();
 
         yield return halfSec;

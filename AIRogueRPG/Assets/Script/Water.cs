@@ -48,14 +48,16 @@ public class Water : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        if(isShooting)
-        rigidbody.MovePosition(rigidbody.position + shootDir * speed * Time.fixedDeltaTime);
+        if(isShooting){
+            rigidbody.MovePosition(rigidbody.position + shootDir * speed * Time.fixedDeltaTime);
+        }
     }
 
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Player") || collision.CompareTag("Water")) return;
         animator.SetBool("Explode", true);
+        isShooting = false;
         audioSource.PlayOneShot(waterSplash);
         if (collision.CompareTag("Enemy")) {
             EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
