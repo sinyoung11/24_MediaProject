@@ -15,7 +15,7 @@ public class PlayerMoveController : MonoBehaviour
             return instance;
         }
     }
-    private float speed = 3f;
+    [SerializeField] private float speed = 3f;
     private float collisitionOffset = 0.05f;
     private Vector2 movement, attackDir;
     private new Rigidbody2D rigidbody;
