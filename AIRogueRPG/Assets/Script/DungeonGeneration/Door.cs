@@ -1,28 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
+
 public class Door : MonoBehaviour
 {
-    public enum DoorType
-    {
-        left, right, top, bottom
-    }
+    public enum DoorType { left, right, top, bottom }
 
     public bool isDoorActive = false;
     public DoorType doorType;
     // public GameObject doorCollider;
     public SpriteRenderer doorSprite;
 
-    private GameObject player;
     private float widthOffset = 4f;
     private Room connectedRoom;
-
-    private void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
-
+    
     public void SetRoom(Room room)
     {
         connectedRoom = room;
@@ -45,9 +34,8 @@ public class Door : MonoBehaviour
     {
         if(!isDoorActive) return;
         Room nextRoom = null;
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-
             switch (doorType)
             {
                 case DoorType.bottom:

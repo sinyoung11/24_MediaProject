@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -16,9 +16,14 @@ public class PlayerAttack : MonoBehaviour
     private float coolTime;
     private bool startCoolDown, fillCoolTime;
     private float attackSpeed = 5f;
-    void Start()
+
+    private void Awake()
     {
         animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
         coolTime = totalCoolTime;
         startCoolDown = false;
         fillCoolTime = false;
@@ -63,6 +68,8 @@ public class PlayerAttack : MonoBehaviour
             }
 
             if (coolTime>0 && startCoolDown && !fillCoolTime) {
+                CameraShaker.Shake(0.07f, 0.04f); 
+
                 Vector3 initPos = transform.position;
                 initPos.y -= 0.5f;
                 //GameObject water = Instantiate(attackObj, initPos, Quaternion.identity);

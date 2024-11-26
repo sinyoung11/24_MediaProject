@@ -10,7 +10,6 @@ public class Item
 
 public class CollectionController : MonoBehaviour
 {
-
     public Item item;
     public float healthChange;
     public float moveSpeedChange;
@@ -19,7 +18,7 @@ public class CollectionController : MonoBehaviour
 
     public ItemFunc itemFunc;
     public float amount;
-    // Start is called before the first frame update
+    
     void Start()
     {
         GetComponent<SpriteRenderer>().sprite = item.itemImage;
@@ -27,7 +26,7 @@ public class CollectionController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.CompareTag("Player"))
         {
             // TO DO Item Effect
             // PlayerController.collectedAmount++;

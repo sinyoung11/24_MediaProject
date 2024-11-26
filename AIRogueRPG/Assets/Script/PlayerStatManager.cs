@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,14 +26,16 @@ public class PlayerStatManager : MonoBehaviour
     public bool isWorking { get; private set; }
 
     public void Awake() {
-        if(instance == null) {
+        if(instance == null)
+        {
             instance = this;
         }
+        animator = GetComponent<Animator>();
     }
-    // Start is called before the first frame update
+    
     void Start()
     {
-        animator = GetComponent<Animator>();
+        
         currentHp = totalHeartNum;
         hp = GameObject.Find("Hp").transform;
         for(int i=0; i < totalHeartNum; i++) {
@@ -52,10 +53,14 @@ public class PlayerStatManager : MonoBehaviour
         StartCoroutine(FalshRed());
 
         if (isWeak) { // -0.5
+            ScreenFade.Instance.Fade(Color.red, 0.1f); // 빨간색
+
             currentHp -= 0.5f;
             GameController.Instance.AddLostHealth(0.5f);
         }
         else { // 1
+            ScreenFade.Instance.Fade(Color.red, 0.3f); // 빨간색
+
             currentHp -= 1;
             GameController.Instance.AddLostHealth(1.0f);
         }
@@ -87,6 +92,7 @@ public class PlayerStatManager : MonoBehaviour
     public void HealPlayer(float amount) {
         currentHp += amount;
         if (currentHp >= totalHeartNum) currentHp = totalHeartNum;
+        ScreenFade.Instance.Fade(Color.green, 0.15f); // 초록색, 강도 0.5
         ApplyHpUI();
     }
 

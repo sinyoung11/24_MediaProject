@@ -44,8 +44,8 @@ public class ItemController : MonoBehaviour
             instance = this;
         }
     }
-    // Start is called before the first frame update
-    void Start()
+    
+    private void Start()
     {
         InitializeAllItemInfo();
         InitializeItemListUI();
@@ -147,16 +147,13 @@ public class ItemController : MonoBehaviour
 
         Destroy(itemStatusUI);
 
-        if(itemInfo.itemFunc == ItemFunc.MoveSpeedUp) {
+        if(itemInfo.itemFunc == ItemFunc.MoveSpeedUp) 
+        {
             playerMoveController.SetMovementSpeed(originVal);
-        }else if(itemInfo.itemFunc == ItemFunc.AttackSpeedUp) {
+        }
+        else if(itemInfo.itemFunc == ItemFunc.AttackSpeedUp)
+        {
             playerAttack.SetAttackSpeed(originVal);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

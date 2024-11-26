@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -93,9 +92,8 @@ public class BatTrackingController : EnemyController
         else
         {
             Vector3 direction = (targetPosition - transform.position).normalized;
-            Vector2 newPosition = rb.position + (Vector2)(direction * speed * 0.5f * Time.deltaTime);
+            Vector2 newPosition = rb.position + (Vector2)(direction * (speed * 0.5f * Time.deltaTime));
             rb.MovePosition(newPosition);
-
         }
     }
 

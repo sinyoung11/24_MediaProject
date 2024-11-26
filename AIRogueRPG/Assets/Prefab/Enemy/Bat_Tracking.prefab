@@ -267,7 +267,7 @@ MonoBehaviour:
   enemyType: 0
   healthPoint: 150
   range: 7
-  speed: 30
+  speed: 10
   attackRange: 1
   coolDown: 1
   notInRoom: 0

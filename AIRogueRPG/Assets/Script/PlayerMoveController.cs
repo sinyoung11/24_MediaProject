@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,6 +5,10 @@ using UnityEngine.InputSystem;
 public class PlayerMoveController : MonoBehaviour
 {
     private static PlayerMoveController instance;
+    private static readonly int IsWalking = Animator.StringToHash("IsWalking");
+    private static readonly int XDir = Animator.StringToHash("XDir");
+    private static readonly int YDir = Animator.StringToHash("YDir");
+
     public static PlayerMoveController Instance{
         get{
             if(instance == null) return null;
@@ -30,17 +33,9 @@ public class PlayerMoveController : MonoBehaviour
             Debug.LogError("PlayerMoveController already has instance");
             Destroy(this.gameObject);
         }
-    }
-
-    // Start is called before the first frame update
-    void Start() {
+        
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    void Update() {
-
     }
 
     private void FixedUpdate() {
@@ -55,26 +50,23 @@ public class PlayerMoveController : MonoBehaviour
             );
 
             if (count <= 0) {
-                rigidbody.MovePosition(rigidbody.position + movement * speed * Time.fixedDeltaTime);
+                rigidbody.MovePosition(rigidbody.position + movement * (speed * Time.fixedDeltaTime));
             }
 
-            animator.SetBool("IsWalking", true);
-            animator.SetFloat("XDir", movement.x);
-            animator.SetFloat("YDir", movement.y);
-
+            animator.SetBool(IsWalking, true);
+            animator.SetFloat(XDir, movement.x);
+            animator.SetFloat(YDir, movement.y);
         }
         else {
-            animator.SetBool("IsWalking", false);
+            animator.SetBool(IsWalking, false);
         }
     }
 
-    public void OnPlayerMove(InputAction.CallbackContext context) {
-        
-
+    public void OnPlayerMove(InputAction.CallbackContext context)
+    {
         movement = context.ReadValue<Vector2>();
 
         isMoving = movement != Vector2.zero;
-
     }
 
     public void SetMovementSpeed(float speed) {

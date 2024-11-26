@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum EnemyState
@@ -40,12 +39,10 @@ public class EnemyController : MonoBehaviour
     protected Vector3 targetPosition;
     public GameObject bulletPrefab;
 
-    // Start is called before the first frame update
     protected virtual void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    // Update is called once per frame
     protected virtual void Update() {}
 
     protected virtual bool IsPlayerInRange(float range) { return false; }
